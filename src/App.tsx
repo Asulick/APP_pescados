@@ -197,11 +197,11 @@ export default function App() {
                 <Fish className="h-6 w-6 text-blue-600" />
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-semibold">FreshFish System</h1>
+                <h1 className="text-xl font-semibold">Beira Mar Pescados</h1>
                 <p className="text-sm text-muted-foreground">Gestão Inteligente de Pescados</p>
               </div>
               <div className="sm:hidden">
-                <h1 className="font-semibold">FreshFish</h1>
+                <h1 className="font-semibold">Beira Mar Pescados</h1>
               </div>
             </div>
           </div>
