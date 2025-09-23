@@ -35,7 +35,6 @@ import {
   Edit, 
   Trash2, 
   Package,
-  Thermometer,
   MapPin,
   Box,
   Scale,
@@ -52,7 +51,7 @@ interface Produto {
   codigo: string;
   nome: string;
   categoria: 'caixa' | 'granel' | 'filetado';
-  estado: 'com-gelizer' | 'sem-gelizer';
+  estado: 'com-glaser' | 'sem-glaser';
   quantidade: number;
   unidade: string;
   precoUnitario: number;
@@ -61,10 +60,8 @@ interface Produto {
   fornecedor: string;
   localizacao: {
     camara: 'A' | 'B' | 'C';
-    prateleira: string;
     posicao: string;
   };
-  temperatura: number;
   observacoes: string;
   qrCode: string;
 }
@@ -76,7 +73,7 @@ export function EstoqueControl() {
       codigo: "SAL001",
       nome: "Salmão Atlântico",
       categoria: "filetado",
-      estado: "com-gelizer",
+      estado: "com-glaser",
       quantidade: 15.5,
       unidade: "kg",
       precoUnitario: 45.00,
@@ -85,10 +82,8 @@ export function EstoqueControl() {
       fornecedor: "Pescados do Norte",
       localizacao: {
         camara: "A",
-        prateleira: "P1",
         posicao: "A1"
       },
-      temperatura: 2,
       observacoes: "Produto premium para restaurantes",
       qrCode: "QR_SAL001_2025082"
     },
@@ -97,7 +92,7 @@ export function EstoqueControl() {
       codigo: "CAM002", 
       nome: "Camarão Rosa",
       categoria: "caixa",
-      estado: "sem-gelizer",
+      estado: "sem-glaser",
       quantidade: 8.2,
       unidade: "kg",
       precoUnitario: 35.00,
@@ -106,10 +101,8 @@ export function EstoqueControl() {
       fornecedor: "Mariscos Bahia",
       localizacao: {
         camara: "B",
-        prateleira: "P2",
         posicao: "B3"
       },
-      temperatura: 1,
       observacoes: "Camarão médio, ideal para pratos executivos",
       qrCode: "QR_CAM002_2025082"
     },
@@ -118,7 +111,7 @@ export function EstoqueControl() {
       codigo: "TIL003",
       nome: "Tilápia Inteira",
       categoria: "granel",
-      estado: "com-gelizer",
+      estado: "com-glaser",
       quantidade: 22.0,
       unidade: "kg",
       precoUnitario: 18.00,
@@ -127,10 +120,8 @@ export function EstoqueControl() {
       fornecedor: "Aquicultura Vale",
       localizacao: {
         camara: "C",
-        prateleira: "P1",
         posicao: "C2"
       },
-      temperatura: 3,
       observacoes: "Peixe fresco de cativeiro",
       qrCode: "QR_TIL003_2025082"
     }
@@ -146,7 +137,7 @@ export function EstoqueControl() {
   const [novoProduto, setNovoProduto] = useState<Partial<Produto>>({
     nome: "",
     categoria: "filetado",
-    estado: "com-gelizer",
+    estado: "com-glaser",
     quantidade: 0,
     unidade: "kg",
     precoUnitario: 0,
@@ -155,10 +146,8 @@ export function EstoqueControl() {
     fornecedor: "",
     localizacao: {
       camara: "A",
-      prateleira: "",
       posicao: ""
     },
-    temperatura: 0,
     observacoes: ""
   });
 
@@ -175,8 +164,8 @@ export function EstoqueControl() {
   };
 
   const estadoColors = {
-    'com-gelizer': "bg-cyan-100 text-cyan-800",
-    'sem-gelizer': "bg-orange-100 text-orange-800"
+    'com-glaser': "bg-cyan-100 text-cyan-800",
+    'sem-glaser': "bg-orange-100 text-orange-800"
   };
 
   const camaraColors = {
@@ -227,17 +216,16 @@ export function EstoqueControl() {
       dataValidade: novoProduto.dataValidade!,
       fornecedor: novoProduto.fornecedor!,
       localizacao: novoProduto.localizacao!,
-      temperatura: novoProduto.temperatura!,
       observacoes: novoProduto.observacoes || "",
       qrCode: `QR_${novoProduto.nome?.substring(0, 3).toUpperCase()}${Date.now()}`
     };
 
     setProdutos([newProduto, ...produtos]);
     setNovoProduto({
-      nome: "", categoria: "filetado", estado: "com-gelizer", quantidade: 0,
+      nome: "", categoria: "filetado", estado: "com-glaser", quantidade: 0,
       unidade: "kg", precoUnitario: 0, dataEntrada: "", dataValidade: "",
-      fornecedor: "", localizacao: { camara: "A", prateleira: "", posicao: "" },
-      temperatura: 0, observacoes: ""
+      fornecedor: "", localizacao: { camara: "A", posicao: "" },
+      observacoes: ""
     });
     setShowDialog(false);
     toast.success("Produto adicionado ao estoque!");
@@ -334,8 +322,8 @@ export function EstoqueControl() {
                     <SelectValue placeholder="Selecione o estado" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="com-gelizer">Com Gelizer</SelectItem>
-                    <SelectItem value="sem-gelizer">Sem Gelizer</SelectItem>
+                    <SelectItem value="com-glaser">Com Glaser</SelectItem>
+                    <SelectItem value="sem-glaser">Sem Glaser</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -382,16 +370,7 @@ export function EstoqueControl() {
                 />
               </div>
               
-              <div className="space-y-2">
-                <Label htmlFor="temperatura">Temperatura (°C)</Label>
-                <Input
-                  id="temperatura"
-                  type="number"
-                  placeholder="Ex: 2"
-                  value={novoProduto.temperatura}
-                  onChange={(e) => setNovoProduto(prev => ({ ...prev, temperatura: parseInt(e.target.value) || 0 }))}
-                />
-              </div>
+
               
               <div className="space-y-2">
                 <Label htmlFor="dataEntrada">Data de Entrada *</Label>
@@ -434,18 +413,7 @@ export function EstoqueControl() {
                 </Select>
               </div>
               
-              <div className="space-y-2">
-                <Label htmlFor="prateleira">Prateleira</Label>
-                <Input
-                  id="prateleira"
-                  placeholder="Ex: P1"
-                  value={novoProduto.localizacao?.prateleira}
-                  onChange={(e) => setNovoProduto(prev => ({ 
-                    ...prev, 
-                    localizacao: { ...prev.localizacao!, prateleira: e.target.value }
-                  }))}
-                />
-              </div>
+
               
               <div className="space-y-2">
                 <Label htmlFor="posicao">Posição</Label>
@@ -484,7 +452,7 @@ export function EstoqueControl() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
@@ -494,22 +462,6 @@ export function EstoqueControl() {
               <div>
                 <p className="text-sm text-muted-foreground">Total de Itens</p>
                 <p className="text-xl font-semibold">{produtos.length}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-cyan-100 rounded-lg">
-                <Snowflake className="h-5 w-5 text-cyan-600" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Com Gelizer</p>
-                <p className="text-xl font-semibold">
-                  {produtos.filter(p => p.estado === 'com-gelizer').length}
-                </p>
               </div>
             </div>
           </CardContent>
@@ -569,8 +521,8 @@ export function EstoqueControl() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="todos">Todos</SelectItem>
-                <SelectItem value="com-gelizer">Com Gelizer</SelectItem>
-                <SelectItem value="sem-gelizer">Sem Gelizer</SelectItem>
+                <SelectItem value="com-glaser">Com Glaser</SelectItem>
+                <SelectItem value="sem-glaser">Sem Glaser</SelectItem>
               </SelectContent>
             </Select>
             
@@ -622,8 +574,8 @@ export function EstoqueControl() {
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className={estadoColors[produto.estado]}>
-                          <Thermometer className="h-3 w-3 mr-1" />
-                          {produto.estado === 'com-gelizer' ? 'Com Gelizer' : 'Sem Gelizer'}
+                          <Snowflake className="h-3 w-3 mr-1" />
+                          {produto.estado === 'com-glaser' ? 'Com Glaser' : 'Sem Glaser'}
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -641,11 +593,7 @@ export function EstoqueControl() {
                             Câmara {produto.localizacao.camara}
                           </Badge>
                           <div className="text-xs text-muted-foreground">
-                            {produto.localizacao.prateleira} - {produto.localizacao.posicao}
-                          </div>
-                          <div className="text-xs text-muted-foreground flex items-center gap-1">
-                            <Thermometer className="h-3 w-3" />
-                            {produto.temperatura}°C
+                            Posição: {produto.localizacao.posicao}
                           </div>
                         </div>
                       </TableCell>

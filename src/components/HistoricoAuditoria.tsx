@@ -176,7 +176,7 @@ export function HistoricoAuditoria() {
         <h2 className="text-2xl">Histórico e Auditoria</h2>
         <Button onClick={exportarRelatorio} className="gap-2">
           <Download className="h-4 w-4" />
-          Exportar Relatório       
+          Exportar Relatório
         </Button>
       </div>
 

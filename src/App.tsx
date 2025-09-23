@@ -4,6 +4,7 @@ import { EstoqueControl } from "./components/EstoqueControl";
 import { EntregasControl } from "./components/EntregasControl";
 import { PedidosControl } from "./components/PedidosControl";
 import { ProducaoControl } from "./components/ProducaoControl";
+import { ClientesControl } from "./components/ClientesControl";
 import { HistoricoAuditoria } from "./components/HistoricoAuditoria";
 import { ComunicacaoIntegrada } from "./components/ComunicacaoIntegrada";
 import { Button } from "./components/ui/button";
@@ -19,7 +20,8 @@ import {
   X,
   Bell,
   ShoppingCart,
-  Factory
+  Factory,
+  Users
 } from "lucide-react";
 import { Toaster } from "./components/ui/sonner";
 
@@ -68,6 +70,11 @@ export default function App() {
             setSidebarOpen(false);
             break;
           case '7':
+            event.preventDefault();
+            setCurrentSection('clientes');
+            setSidebarOpen(false);
+            break;
+          case '8':
             event.preventDefault();
             setCurrentSection('comunicacao');
             setSidebarOpen(false);
@@ -140,11 +147,18 @@ export default function App() {
       shortcut: "Ctrl+6"
     },
     {
+      id: "clientes",
+      name: "Cadastro de Clientes",
+      icon: Users,
+      description: "Gestão de clientes",
+      shortcut: "Ctrl+7"
+    },
+    {
       id: "comunicacao",
       name: "Comunicação",
       icon: MessageSquare,
       description: "Mensagens e notificações",
-      shortcut: "Ctrl+7"
+      shortcut: "Ctrl+8"
     }
   ];
 
@@ -155,11 +169,13 @@ export default function App() {
       case "estoque":
         return <EstoqueControl />;
       case "pedidos":
-        return <PedidosControl />;
+        return <PedidosControl onNavigate={setCurrentSection} />;
       case "producao":
         return <ProducaoControl />;
       case "entregas":
         return <EntregasControl />;
+      case "clientes":
+        return <ClientesControl />;
       case "historico":
         return <HistoricoAuditoria />;
       case "comunicacao":
@@ -197,11 +213,11 @@ export default function App() {
                 <Fish className="h-6 w-6 text-blue-600" />
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-semibold">Beira Mar Pescados</h1>
+                <h1 className="text-xl font-semibold">FreshFish System</h1>
                 <p className="text-sm text-muted-foreground">Gestão Inteligente de Pescados</p>
               </div>
               <div className="sm:hidden">
-                <h1 className="font-semibold">Beira Mar Pescados</h1>
+                <h1 className="font-semibold">FreshFish</h1>
               </div>
             </div>
           </div>
